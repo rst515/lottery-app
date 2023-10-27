@@ -1,0 +1,30 @@
+{% extends "app/layout.html" %} {% load static %}
+{% load widget_tweaks %}
+{% load crispy_forms_tags %}
+{% block body %}
+<main>
+    <div class="container" id="content-div">
+        {% include "app/messages.html" %}
+        <div>
+                <div class="card text-light">
+                    <div class="card-header">
+                        <h3 class="col-11 p-1"><i class="bbi bi-calendar3 pe-1"></i>  Draw</h3>
+                    </div>
+
+                        <div class="card card-body">
+                            <form method="POST">
+                                <!-- Security token by Django -->
+                                {% csrf_token %}
+
+                                <!-- form -->
+                                {{ form | crispy }}
+
+{#                                <input type ="hidden" name="id" value="{{ player.id }}">#}
+                                <button class="btn btn-info">Submit</button>
+                            </form>
+                        </div>
+                </div>
+        </div>
+    </div>
+</main>
+{%  endblock %}

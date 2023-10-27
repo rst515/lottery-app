@@ -1,0 +1,21 @@
+{% extends "app/layout.html" %} {% load static %}
+{% load widget_tweaks %}
+{% load crispy_forms_tags %}
+{% block body %}
+<main>
+    <div class="container" id="content-div">
+
+        <form method="post">{% csrf_token %}
+
+        <p class="text-primary">
+            Are you sure you want to delete "{{ object }}"?
+        </p>
+
+
+            <input class="btn btn-sm btn-danger" type="submit" value="Delete {{ object }}">
+            <a class="btn btn-sm btn-outline-info" href="{% url 'players' %}">Cancel</a>
+        </form>
+    </div>
+</main>
+
+{% endblock %}

@@ -1,0 +1,78 @@
+{% extends "app/layout.html" %} {% load static %}
+{% load widget_tweaks %}
+{% load crispy_forms_tags %}
+
+{% block body %}
+<main xmlns="http://www.w3.org/1999/html">
+    <div class="container text-center" id="content-div">
+        {% include "app/messages.html" %}
+
+        <h1 class="text-primary pt-2">
+            WV Lottery
+        </h1>
+
+
+    <div class="text-primary">
+    <h6><i class="bi bi-123 pe-1"></i>
+        Numbers
+    </h6>
+    </div>
+
+<div class="card bg-light border-primary border-1 mb-2">
+    <small class="card-header text-light">
+        Available <span class="badge rounded-pill bg-info ms-1">{{ unused_numbers.count }}</span>
+    </small>
+        <div class="card-body bg-light">
+        <p class="card-text text-primary">
+            {% for unused_number in unused_numbers %}
+                <i class="bi bi-circle text-primary pe-1 ps-2"> </i>{{ unused_number.ball_id }}
+            {% endfor %}
+        </p>
+        </div>
+</div>
+
+    <div>
+<div class="card bg-light border-primary border-1 mb-2">
+    <small class="card-header text-light">
+        Assigned <span class="badge rounded-pill bg-info ms-1">{{ used_numbers.count }}</span>
+    </small>
+        <div class="card-body bg-light">
+    <table class="table text-primary table-striped bg-light">
+    <tbody hx-target="closest tr">
+        {% for number in numbers %}
+        <tr class="" data-bs-toggle="collapse" data-bs-target="#numberRowEditBtn-{{number.ball_id}}">
+            <th class="text-dark" scope="row">
+                <i class="bi bi-circle-fill text-primary pe-2"> </i>
+                {{ number.ball_id }}
+            </th>
+            <td class="text-left text-dark text-start">
+                <i class="bi bi-person-fill text-primary pe-2"></i>
+                {% if number.player %}
+                    {{ number.player.name }}
+                {% else %}
+                    <i>---</i>
+                {%  endif %}
+            </td>
+        </tr>
+            <tr></tr>
+        <tr id="numberRowEditBtn-{{number.ball_id}}" class="collapse collapsed">
+        <td colspan="2">
+            <button class="btn btn-sm btn-info" type="button" hx-get="{% url "edit_number__player" number.ball_id %}" hx-swap="outerHTML"
+              aria-controls="numRowCollapse" aria-expanded="false" aria-label="Number row menu">
+                <i class="bi bi-pencil-square text-light pe-1" ></i>
+                Change Player for {{ number.ball_id }}
+            </button>
+        </td>
+        </tr>
+
+        {%  endfor %}
+    </tbody>
+    </table>
+        </div>
+</div>
+    </div>
+        </div>
+</main>
+
+
+{% endblock %}

@@ -1,0 +1,75 @@
+{% extends "app/layout.html" %} {% load static %}
+{% load widget_tweaks %}
+{% load crispy_forms_tags %}
+
+{% block body %}
+<main>
+    <div class="container text-center" id="content-div">
+        {% include "app/messages.html" %}
+
+        <h1 class="text-primary pt-2">
+            WV Lottery
+        </h1>
+
+    <div class="text-primary">
+    <h6><i class="bi bi-calendar3 pe-1"></i>
+        Draws
+    </h6>
+
+    <a class="btn btn-sm btn-outline-info mb-2" aria-label="NewDraw"
+       href="{% url 'draw-add' %}">
+        <i class="bi bi-calendar2-plus text-info pe-1"></i>
+        Add Draw
+    </a>
+
+        {% for draw in draws %}
+
+            <div class="card text-white mb-3">
+              <div class="card-header bg-primary"
+                   data-bs-toggle="collapse"
+                   data-bs-target="#drawEditBtn-{{ draw.id }}"
+               >
+                {{ draw.draw_date|date:"l, j F Y" }}
+              </div>
+              <div class="card-body bg-light text-dark">
+                <h6 class="card-title">
+               <i class="bi bi-circle-fill text-primary pe-1"> </i>{{ draw.bonus_ball.ball_id }}
+
+                    {% if draw.bonus_ball.player %}
+                        <i class="bi bi-person-fill text-primary ps-5 pe-2"></i>
+                        {{ draw.bonus_ball.player.name }}
+                        <span class="badge rounded-pill bg-info ms-1">
+                            <i class="bi bi-stars text-light"></i> {{ draw.wins }}
+                        </span>
+
+                    {% else %}
+                        <i class="bi bi-person-x-fill text-muted ps-5 pe-2"></i>
+                        <text class="text-muted pe-5">No winner</text>
+                    {%  endif %}
+                </h6>
+                <p id="drawEditBtn-{{ draw.id }}" class="collapse collapsed">
+
+                    <a class="btn btn-sm btn-info" type="button" href="{% url "draw-update" draw.id %}"
+                       aria-controls="drawEditCollapse" aria-expanded="false" aria-label="Update Draw">
+                        <i class="bi bi-pencil-square text-light pe-1"></i>
+                        Update
+                    </a>
+                    <a class="btn btn-sm btn-danger" type="button" href="{% url "draw-delete" draw.id %}"
+                       aria-controls="drawDeleteCollapse" aria-expanded="false" aria-label="Delete Draw">
+                        <i class="bi bi-trash text-light pe-1"></i>
+                        Delete
+                    </a>
+                </p>
+              </div>
+            </div>
+
+        {%  endfor %}
+    </div>
+        <div>
+            <small class="text-muted">v1.6</small>
+        </div>
+    </div>
+</main>
+
+
+{% endblock %}

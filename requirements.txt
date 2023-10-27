@@ -1,0 +1,14 @@
+beautifulsoup4==4.12.2
+Django==4.0.5
+django_filter==22.1
+django_htmx==1.13.0
+GitPython==3.1.40
+python-dotenv==1.0.0
+Requests==2.31.0
+crispy-bootstrap5==0.6
+django-crispy-forms==1.14.0
+django-import-export==3.0.2
+django-jazzmin==2.6.0
+django-widget-tweaks==1.4.12
+djangorestframework==3.13.1
+psycopg2-binary==2.9.9

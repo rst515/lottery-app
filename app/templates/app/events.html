@@ -1,0 +1,106 @@
+{% extends "app/layout.html" %} {% load static %}
+
+{% load widget_tweaks %}
+{% load crispy_forms_tags %}
+
+{% block body %}
+<!--Events-->
+<div class="col bg-dark" id="content-div">
+  <button class="btn btn-outline-success" aria-label="NewEvent"
+    hx-get="/event/new"
+    hx-target="#content-div"
+    hx-swap="innerHTML"
+    hx-push-url="true">
+  <i class="bi bi-calendar-plus me-1"></i>
+  Add Event
+  </button>
+
+    <div class="card text-light p-1 mb-1 mt-1">
+      <div class="card-header d-flex justify-content-between bg-gradient">
+        <h3 class="p-1 me-1 text-success"><i class="bi bi-calendar3 text-success pe-1" width="16" height="16"> </i> Events
+
+        </h3>
+
+        <span class="dropdown">
+          <button class="btn btn-dark btn-outline-success position-relative" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+            <i class="bi bi-filter" style="font-size: 1rem;"></i><span class="position-absolute top-0 start-0 translate-middle badge bg-success text-dark" style="font-size: 0.75rem;">{{ filter.qs.count }}</span>
+          </button>
+
+          <form method="get" class="dropdown-menu dropdown-menu-dark p-2 text-success" style="font-size: 1.2rem;">
+            {% comment %} {{ filter.form|crispy }} {% endcomment %}
+            {% comment %} {{ filter.form.activities.label_tag }} {% endcomment %}
+            {% render_field filter.form.activities class="p-2 mb-1" %}
+            <button class="btn btn-sm btn-success" type="submit">Filter</button>
+          </form>
+          {% comment %} <ul class="dropdown-menu dropdown-menu-dark">
+            {% for activity in activities %}
+            <li><a class="dropdown-item" href="/events/{{activity.description}}">{{activity.description}}</a></li>
+            {% endfor %}
+          </ul> {% endcomment %}
+        </span>
+
+      </div>
+      <div class="card mb-5">
+        {% for event in filter.qs %}
+        <div class="card p-2 bg-dark border-success mb-1">
+        <div>
+        <table id="tw-{{contact.id}}" class="">
+        <tbody>
+          <tr>
+            <td class="col-10"><i class="bi bi-person-circle text-success pe-2"></i><text class="fw-bold">{{event.contact}}</text><br>
+              <i class="bi bi-calendar3-event text-muted pe-2" style="font-size: 1rem;"></i><text class="fw-light" style="font-size: 0.75rem;">{{ event.timestamp|date:"D j M Y H:i" }}</text>
+            </td>
+            <td></td>
+            {% comment %} <td class="pe-5"></td> {% endcomment %}
+            <td rowspan="3">
+              {# edit button #}
+              <button
+              class="btn btn-outline-light mb-2 me-2"
+              hx-get="/event/{{event.id}}/edit"
+              hx-swap="innerHTML"
+              hx-target="#content-div"
+              hx-push-url="true">
+              <i class="bi bi-pencil-square" style="font-size: 1rem;"></i>
+              </button>
+              {# delete event #}
+              <button
+              class="btn btn-outline-danger text-danger me-1"
+              hx-put="/event/{{event.id}}/delete"
+              hx-swap="innerHTML"
+              hx-target="#content-div"
+              hx-confirm="Delete event, are you sure?">
+                <i class="bi bi-calendar2-x" style="font-size: 1rem;"></i>
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              😘 <span class="badge bg-gradient"> {{ event.rating_kissing }} </span>&nbsp
+              ⚗️ <span class="badge bg-gradient"> {{ event.rating_chemistry_interpersonal }} </span>&nbsp
+              🔥 <span class="badge bg-gradient"> {{ event.rating_chemistry_physical }} </span>
+              <br>
+              {% for activity in event.activities.all %}
+              <span class="badge rounded-pill bg-gradient text-success fw-normal">{{ activity }} </span>
+              {% endfor %}
+            </td>
+
+
+        </tr>
+        {% comment %} <tr id="address-event-{{event.id}}" class="collapse">
+            <td colspan="4">{{ event.address }} {{ event.location }}</td>
+        </tr>  {% endcomment %}
+      </tbody>
+    </table>
+  </div>
+  </div>
+        {% endfor %}
+
+
+</div >
+</div>
+</div>
+</div>
+<div>
+
+<!--end of Events-->
+{% endblock %}

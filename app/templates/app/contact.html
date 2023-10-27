@@ -1,0 +1,163 @@
+{% include "app/messages.html" %}
+
+<!--Contact details-->
+    <div class="card text-light p-1 mb-1 mt-1">
+      <div class="card-header d-flex justify-content-between bg-gradient">
+        <h3 class="col-11 p-1 text-light"><i class="bi bi-person-circle text-success me-1" width="16" height="16"> </i> {{contact.name}}</h3>
+      </div>
+      <div class="card ">
+        <div class="table-wrapper">
+          <table class="table" style="vertical-align: middle;">
+            <tbody id="contact">
+                  <tr scope="row" class="bg-dark" style="font-size: 1rem;">
+                    <td class="col-7">
+                      {% comment %} <b>{{contact.name}}</b> <br> {% endcomment %}
+                      <span class="badge bg-gradient"> {{ contact.overall_score }} </span>
+                      {% if contact.overall_score == 5  %} 🔥🔥🔥🔥🔥 {% elif contact.overall_score >= 4 %} 🔥🔥🔥🔥 {% elif contact.overall_score >= 3 %} 🔥🔥🔥 {% elif contact.overall_score >= 2 %} 🔥🔥{% elif contact.overall_score >= 1 %} 🔥{% elif contact.overall_score >= 0 %} 🧯 {% else %} 🤔 {% endif %} </td>
+                    {% comment %} <td class="col-2"><b>{{contact.age}}</b> </td>
+                    <td class="col-2"><i class="flag1x {{ contact.nationality.flag_css }}"></i></td> {% endcomment %}
+                    <td class="col-3 text-nowrap">
+                      {{contact.age}} <i class="flag1x {{ contact.nationality.flag_css }} ms-1"></i>
+                    </td>
+
+
+
+
+                    <td class="col-2 p-2">
+                        <div class="d-flex justify-content-center">
+                            <div class="dropdown-center">
+                                <button type="button" class="btn btn-outline-success m-1" data-bs-toggle="collapse" data-bs-target="#contactmenu" aria-expanded="false">
+                                    <i class="bi bi-three-dots-vertical" style="font-size: 1rem;"></i>
+                                </button>
+                          </div>
+                        </div>
+                      </td>
+                  </tr>
+
+{% comment %} <tr>
+  <td class="col-4" colspan="4">
+
+  </td>
+</tr> {% endcomment %}
+
+                {% comment %} <tr class="collapse"> {% endcomment %}
+                  <tr id="contactmenu" scope="row" class="collapse bg-dark text-dark p-1">
+                    <td colspan="4" class="text-center p-1">
+                    {% comment %} <div class=""> {% endcomment %}
+                      {# new event #}
+                      <button
+                        class="btn btn-outline-success"
+                        hx-get="{% url 'new_contact_event' id=contact.id %}"
+                        hx-target="#content-div"
+                        hx-swap="innerHTML"
+                        hx-push-url="true">
+                        <i class="bi bi-calendar3-event pe-1" style="font-size: 1rem;"></i> New Event
+                      </button>
+                      {# edit contact #}
+                        <button
+                            class="btn btn-outline-light"
+                            hx-get="/contact/{{contact.id}}/edit"
+                            hx-swap="outerHTML"
+                            hx-target="#content-div"
+                            hx-push-url="true">
+                            <i class="bi bi-pencil-square pe-1" style="font-size: 1rem;"></i> Edit
+                        </button>
+                        {# delete contact #}
+                        <button
+                            class="btn btn-outline-danger"
+                            hx-put="/contact/{{contact.id}}/delete"
+                            hx-swap="innerHTML swap:1s"
+                            hx-target="#content-div"
+                            hx-confirm="Delete {{contact.name}}, are you sure?"
+                           >
+                      <i class="bi bi-person-x pe-1" style="font-size: 1rem;"></i> Delete
+                      </button>
+
+                    </td>
+
+                    </tr>
+
+              </tbody>
+        </table>
+
+<!--Key stats-->
+    <div id="stats" class=" card bg-dark collapse show mb-3 p-1">
+      <div class="d-flex justify-content-evenly " style="font-size: 1.1rem;">
+        <div><i class="bi bi-calendar3 text-success">&nbsp</i> <span class="badge bg-gradient"> {{ events.count }} </span></div>
+        <div>😘 <span class="badge bg-gradient"> {{ scores.mean_kissing }} </span></div>
+        <div>⚗️ <span class="badge bg-gradient"> {{ scores.mean_chemistry_interpersonal }} </span></div>
+        <div>🔥 <span class="badge bg-gradient"> {{ scores.mean_chemistry_physical }} </span></div>
+      </div>
+      <div class="text-center" style="font-size: 1rem;">
+
+          {% for activity in activities %}
+          {% comment %} <span class="badge rounded-pill bg-gradient text-success fw-normal m-1" style="font-size: 0.75rem;">{{ activity}}
+            <span class="badge bg-gradient fw-normal" style="font-size: 0.75rem;"> {{activity.count}}</span>
+          </span> {% endcomment %}
+          <span class="badge rounded-pill bg-gradient text-success fw-normal " > {{activity}}
+            <span class="badge bg-gradient fw-normal " style="font-size: 0.7rem;">{{activity.count}}</span>
+          </span>
+          {% endfor %}
+
+
+      </div>
+    </div>
+
+                {% for event in events %}
+                <div class="card p-2 bg-dark border-success mb-1">
+                <div>
+                <table id="tw-{{contact.id}}" class="">
+                  <tbody>
+                    <tr>
+                      <td class="col-10"><i class="bi bi-calendar3-event text-muted pe-2" style="font-size: 1rem;"></i><text class="fw-light" style="font-size: 0.75rem;">{{ event.timestamp|date:"D j M Y H:i" }}</text></td>
+                      <td></td>
+                      <td class="pe-5"></td>
+                      <td rowspan="2">
+                        {# edit event #}
+                        <button
+                            class="btn btn-outline-light m-1"
+                            hx-get="/event/{{event.id}}/edit"
+                            hx-swap="innerHTML"
+                            hx-target="#content-div"
+                            hx-push-url="true">
+                            <i class="bi bi-pencil-square text-light" style="font-size: 1rem;"></i>
+                        </button>
+                        {# delete event #}
+                        <button
+                        class="btn btn-outline-danger text-danger m-1"
+                        hx-put="/event/{{event.id}}/delete"
+                        hx-swap="innerHTML"
+                        hx-target="#content-div"
+                        hx-confirm="Delete event, are you sure?">
+                          <i class="bi bi-calendar2-x text-danger" style="font-size: 1rem;"></i>
+                        </button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        😘 <span class="badge bg-gradient"> {{ event.rating_kissing }} </span>&nbsp
+                        ⚗️ <span class="badge bg-gradient"> {{ event.rating_chemistry_interpersonal }} </span>&nbsp
+                        🔥 <span class="badge bg-gradient"> {{ event.rating_chemistry_physical }} </span>
+                        <br>
+                        {% for activity in event.activities.all %}
+                        <span class="badge rounded-pill bg-gradient text-success fw-normal">{{ activity }} </span>
+                          {% endfor %}
+                      </td>
+
+
+                  </tr>
+                  {% comment %} <tr id="address-event-{{event.id}}" class="collapse">
+                      <td colspan="4">{{ event.address }} {{ event.location }}</td>
+                  </tr>  {% endcomment %}
+                  </tbody>
+                </table>
+                </div>
+                </div>
+                {% endfor %}
+
+      </div >
+      </div>
+
+    </div>
+
+<!--end of Contact details-->

@@ -1,0 +1,84 @@
+{% extends "app/layout.html" %} {% load static %}
+{% load widget_tweaks %}
+{% load crispy_forms_tags %}
+
+{% block body %}
+    <main>
+        <div class="container text-center" id="content-div">
+            {% include "app/messages.html" %}
+
+            <h1 class="text-primary pt-2">
+                WV Lottery
+            </h1>
+
+
+            <div class="text-primary">
+                <h6><i class="bi bi-people-fill pe-1"></i>
+                    Players <span class="badge rounded-pill bg-info me-1">{{ players.count }}</span>
+                </h6>
+
+                <a class="btn btn-sm btn-outline-info mb-2" aria-label="NewPlayer"
+                   href="{% url 'player-add' %}">
+                    <i class="bi bi-person-plus text-info pe-1"></i>
+                    Add Player
+                </a>
+
+                {% for player in players %}
+
+                    {% if player.active %}
+                        <div class="card text-white mb-3">
+                        <div class="card-header" data-bs-toggle="collapse"
+                             data-bs-target="#playerEditBtn-{{ player.id }}">
+                            <i class="bi bi-person-fill pe-2"></i>{{ player.name }}
+                        </div>
+                    {% else %}
+                        <div class="card text-muted mb-3">
+                        <div class="card-header" data-bs-toggle="collapse"
+                             data-bs-target="#playerEditBtn-{{ player.id }}">
+                            INACTIVE<i class="bi bi-person-fill ps-3 pe-2"></i>{{ player.name }}
+                            {# {{ draw.draw_date|date:"l, j F Y" }}#}
+                        </div>
+                    {% endif %}
+
+                <div class="card-body bg-light text-dark">
+                   {% if player.draws %}
+                            <h6 class="text-info"> Wins
+                                <span class="badge rounded-pill bg-info">
+                                    <i class="bi bi-stars text-light"></i> {{ player.draws }}
+                                </span>
+                            </h6>
+                        {% endif %}
+                    <p>
+                        {% for number in player.bonusball_set.all %}
+                            <i class="bi bi-circle-fill text-primary ps-2 pe-1"> </i> {{ number.ball_id }}
+                        {% endfor %}
+                    </p>
+                   <small class="text-muted text-primary">
+                        Active from: {{ player.datestamp_active_from|date:"j F Y" }}<br>
+                        {% if player.datestamp_active_until %}
+                            Active until: {{ player.datestamp_active_until|date:"j F Y" }}<br>
+                        {% endif %}
+                    </small>
+                    <p id="playerEditBtn-{{ player.id }}" class="collapse collapsed">
+
+                        <a class="btn btn-sm btn-info" type="button" href="{% url "player-update" player.id %}"
+                           aria-controls="playerEditCollapse" aria-expanded="false" aria-label="Update Player">
+                            <i class="bi bi-pencil-square text-light pe-1"></i>
+                            Update
+                        </a>
+                        <a class="btn btn-sm btn-danger" type="button" href="{% url "player-delete" player.id %}"
+                           aria-controls="playerDeleteCollapse" aria-expanded="false" aria-label="Delete Player">
+                            <i class="bi bi-trash text-light pe-1"></i>
+                            Delete
+                        </a>
+
+                    </p>
+                </div>
+                </div>
+                {% endfor %}
+
+                </div>
+    </main>
+
+
+{% endblock %}

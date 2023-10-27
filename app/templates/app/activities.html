@@ -1,0 +1,52 @@
+   <!--Activities-->
+{% include "app/messages.html" %}
+
+    <button class="btn btn-sm btn-outline-success" aria-label="NewActivity"
+    hx-get="/activity/new"
+    hx-target="#content-div"
+    hx-push-url="true">
+    <i class="bi bi-plus-circle-dotted text-success me-1" style="font-size: 1rem;"></i>
+    Add Activity</button>
+
+    <div class="card text-light p-1 mb-1 mt-1">
+      <div class="card-header d-flex justify-content-between bg-gradient">
+        <h3 class="col-11 p-1 text-success text-center">
+          <i class="bi bi-activity text-success pe-1" width="16" height="16"> </i> Activities</h3>
+          {% comment %} <button type="button" class="btn-close btn-close-white" aria-label="Close" data-bs-toggle="collapse" data-bs-target="#collapseContacts"></button> {% endcomment %}
+      </div>
+      <div class="card">
+
+
+        <div class="table-wrapper bg-dark">
+          <table class=" bg-dark table-striped text-light d-flex justify-content-evenly">
+
+            <tbody id="activities_list"  hx-target="closest tr">
+            {% for activity in activities %}
+                  <tr scope="row">
+                    <td class="col-8 p-3">{{ activity }} ({{ activity.count }})</td>
+                    <td class="col-2">
+                      <button
+                      class="btn btn-outline-light text-light me-1"
+                      hx-get="/activity/{{activity.id}}/edit"
+                      hx-swap="outerHTML">
+                    <i class="bi bi-pencil-square" style="font-size: 1rem;"></i>
+                    </button>
+                    </td>
+                    <td class="col-2">
+                      <button
+                      class="btn btn-outline-danger text-danger"
+                      hx-put="/activity/{{activity.id}}/delete"
+                      hx-swap="outerHTML swap:1s"
+                      hx-confirm="Are you sure?">
+                    <i class="bi bi-trash text-danger" style="font-size: 1rem;"></i>
+                    </button>
+                    </td>
+                  </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div >
+      </div>
+    </div>
+
+<!--end of Activities-->

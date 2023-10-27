@@ -1,0 +1,55 @@
+<nav class="navbar fixed-bottom navbar-expand-sm navbar-dark bg-light" style="background-color: #0d2513;">
+    <div class="container-fluid ">
+      <div class="mx-auto">
+      <button class="navbar-toggler p-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+              aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+       <i class="bi bi-stars text-primary" style="font-size: 2rem;"></i>
+          </span>
+
+      </button>
+      </div>
+      <div class="collapse navbar-collapse text-center bg-grey justify-content-center" id="navbarCollapse">
+        <ul class="navbar-nav" >
+          <li class="nav-item btn btn-lg btn-primary m-1">
+            <a class="nav-link text-light" type="button" aria-current="page" href="{% url 'index' %}">
+                <i class="bi bi-calendar3 text-light" hx-push-url="true"></i>
+            &nbsp Draws</a>
+          </li>
+          <li class="nav-item btn btn-lg btn-primary m-1">
+            <a class="nav-link text-light" href="{% url 'numbers' %}"
+            >
+            <i class="bi bi-123"></i>
+              &nbsp Numbers</a>
+          </li>
+          <li class="nav-item btn btn-lg btn-primary m-1">
+            <a class="nav-link text-light" href="{% url 'players' %}"
+            >
+              <i class="bi bi-people-fill"></i>
+              &nbsp Players</a>
+          </li>
+{#          <li class="nav-item btn btn-lg">#}
+{#            <a class="nav-link text-light" href="#" tabindex="-2" aria-disabled=""#}
+{#              type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"#}
+{#              hx-get="index"#}
+{#              hx-target="#content-div"#}
+{#              hx-swap="innerHTML"#}
+{#              hx-push-url="true">#}
+{#              <i class="bi bi-bar-chart"></i>#}
+{#              &nbsp Stats</a>#}
+{#          </li>#}
+          <li class="nav-item btn btn-lg btn-primary m-1">
+            <a class="nav-link text-white-25" type="button" href="{% url 'password_change' %}" tabindex="-3" aria-disabled="" hx-push-url="/index">
+            <i class="bi bi-key"></i>
+              &nbsp Change Password</a>
+          </li>
+          <li class="nav-item btn btn-lg btn-primary m-1">
+            <a class="nav-link text-light text-nowrap" type="button" href="{% url 'logout' %}" tabindex="-4" aria-disabled="">
+            <i class="bi bi-box-arrow-left"></i>
+              &nbsp Sign out</a>
+          </li>
+
+
+        </ul>
+
+    </div>
+  </nav>

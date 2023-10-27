@@ -1,0 +1,81 @@
+{% load static %} {% block body %}
+<!DOCTYPE html>
+<html lang="en" style="height: 100%;">
+  <head>
+    <title>{% block title %}wv-lottery{% endblock %}</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="static/app/favicon.svg" />
+    <link
+      {% comment %} href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor"
+      crossorigin="anonymous" {% endcomment %}
+    />    
+    <!-- Custom styles for this template -->
+    <link href="{% static 'app/mdb.dark.min.css' %}" rel="stylesheet" />
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+  </head>
+
+<body class="text-center text-light" style="height: 100%; display: flex;">
+  <main class="form-signin m-auto text-center justify-content-center" style="z-index: 2;">
+    <i class="bi bi-stars text-success" style="font-size: 4rem;"></i>
+    <h3 class="h4 mb-3 fw-normal">Register</h3>
+
+{% if message %}
+<div>{{ message }}</div>
+{% endif %}
+
+<form action="{% url 'register' %}" method="post">
+  {% csrf_token %}
+  <div class="form-group">
+      <input
+        class="form-control bg-dark text-success mb-1"
+        autofocus
+        type="text"
+        name="username"
+        placeholder="Username"
+      />
+      <input
+        class="form-control bg-dark text-success mb-1"
+        autofocus
+        type="text"
+        name="first_name"
+        placeholder="First name"
+      />
+      <input
+        class="form-control bg-dark text-success mb-1"
+        autofocus
+        type="text"
+        name="last_name"
+        placeholder="Last name"
+      />
+      <input
+        class="form-control bg-dark text-success mb-1"
+        type="email"
+        name="email"
+        placeholder="Email Address"
+      />
+      <input
+        class="form-control bg-dark text-success mb-1"
+        type="password"
+        name="password"
+        placeholder="Password"
+      />
+      <input
+        class="form-control bg-dark text-success mb-1"
+        type="password"
+        name="confirmation"
+        placeholder="Confirm Password"
+      />
+  </div>
+
+  <input class="btn btn-lg btn-success text-dark" type="submit" value="Register" />
+</form>
+
+Already have an account? <a href="{% url 'login' %}">Log In here.</a>
+
+  </main>
+</body>
+{% endblock %}
