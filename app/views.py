@@ -27,11 +27,13 @@ from .models import BonusBall, Player, Draw
 w_secret = os.environ.get('GIT_HOOK_SECRET', '')
 
 
-#  https://simpleisbetterthancomplex.com/tutorial/2018/11/22/how-to-implement-token-authentication-using-django-rest-framework.html
+# pylint: disable=line-too-long
+# https://simpleisbetterthancomplex.com/tutorial/2018/11/22/how-to-implement-token-authentication-using-django-rest-framework.html
+
 class HelloView(APIView):
     permission_classes = (IsAuthenticated,)
 
-    def get(self, request):
+    def get(self):
         content = {'message': 'Hello, World!'}
         return Response(content)
 
@@ -45,20 +47,22 @@ class PostResult(APIView):
                 data = JSONParser().parse(request)
                 bonus_ball = data['bonus_ball']
                 draw_date = data['draw_date']
-                logger.debug(f'Received request with data: {data}')
-                logger.info(f'Draw for {draw_date} received with bonus ball {bonus_ball}')
+                logger.debug('Received request with data: %s', data)
+                logger.info('Draw for %s received with bonus ball %s', draw_date, bonus_ball)
+                # pylint:disable=invalid-name
                 bb = BonusBall.objects.get(pk=bonus_ball)
                 draw = Draw.objects.create(draw_date=draw_date, bonus_ball=bb)
-                logger.info(f'Draw for {draw.draw_date} with bonus ball {draw.bonus_ball.ball_id} saved. ')
+                logger.info('Draw for %s with bonus ball %s saved. ', draw.draw_date, draw.bonus_ball.ball_id)
 
-                draw = Draw.objects.values('bonus_ball_id', 'draw_date', 'bonus_ball__player__name').order_by("-draw_date").annotate(  # works
+                draw = Draw.objects.values('bonus_ball_id', 'draw_date', 'bonus_ball__player__name').order_by(
+                    "-draw_date").annotate(  # works
                     wins=Count('bonus_ball__player__bonusball__draw')).first()
 
                 context = {"draw": draw}
-                logger.info(f'{context=}')
+                logger.info(context)
                 return JsonResponse(context, status=status.HTTP_201_CREATED)
-            except Exception as e:
-                return JsonResponse({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            except Exception as exception:  # pylint: disable=broad-exception-caught
+                return JsonResponse({'error': str(exception)}, status=status.HTTP_400_BAD_REQUEST)
         return JsonResponse({'error': 'Invalid request, method must be POST'}, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -116,29 +120,32 @@ def latest_result(request):
 
 @login_required
 def players(request):
-    players = Player.objects.prefetch_related('bonusball_set').filter(active=True).order_by("name").annotate(
+    players_list = Player.objects.prefetch_related('bonusball_set').filter(active=True).order_by("name").annotate(
         draws=Count('bonusball__draw')
     )
 
     context = {
-        'players': players,
+        'players': players_list,
     }
 
     return render(request, "app/players.html", context)
 
 
+# pylint: disable=too-many-ancestors
 class DrawCreateView(CreateView):
     model = Draw
     form_class = DrawForm
     success_url = reverse_lazy('index')
 
 
+# pylint: disable=too-many-ancestors
 class DrawUpdateView(UpdateView):
     model = Draw
     form_class = DrawUpdateForm
     success_url = reverse_lazy('index')
 
 
+# pylint: disable=too-many-ancestors
 class DrawDeleteView(DeleteView):
     model = Draw
     success_url = reverse_lazy('index')
@@ -150,12 +157,14 @@ class PlayerCreateView(CreateView):
     success_url = reverse_lazy('players')
 
 
+# pylint: disable=too-many-ancestors
 class PlayerUpdateView(UpdateView):
     model = Player
     form_class = PlayerUpdateForm
     success_url = reverse_lazy('players')
 
 
+# pylint: disable=too-many-ancestors
 class PlayerDeleteView(DeleteView):
     model = Player
     success_url = reverse_lazy('players')
@@ -163,6 +172,7 @@ class PlayerDeleteView(DeleteView):
 
 @login_required
 def numbers(request):
+    # pylint:disable=invalid-name
     bb = BonusBall.objects.all().order_by("ball_id")
     used_bb = BonusBall.objects.exclude(player=None)
     unused_bb = BonusBall.objects.filter(player=None)
@@ -176,19 +186,20 @@ def numbers(request):
     return render(request, "app/numbers.html", context)
 
 
+# pylint: disable=inconsistent-return-statements
 @csrf_exempt
 @login_required
-def edit_number__player(request, pk):
+def edit_number__player(request, pk):  # pylint:disable=invalid-name
     if request.method == "GET":
+        # pylint:disable=invalid-name
         bb = BonusBall.objects.get(pk=pk)
-        players = Player.objects.filter(active=True).order_by('name')
+        players_list = Player.objects.filter(active=True).order_by('name')
 
         return render(request, "app/edit_bonus_ball__player_partial.html", context={
             'number': bb,
-            'players': players,
-        }
-                      )
-    elif request.method == "POST":
+            'players': players_list,
+        })
+    if request.method == "POST":
         bb_to_edit = BonusBall.objects.get(pk=pk)
 
         if request.POST['selected_player_id'] == '0':
@@ -214,12 +225,10 @@ def login_view(request):
         if user is not None:
             login(request, user)
             return HttpResponseRedirect(reverse("index"))
-        else:
-            return render(request, "app/sign_in.html", {
-                "message": "Invalid username and/or password."
-            })
-    else:
-        return render(request, "app/sign_in.html")
+        return render(request, "app/sign_in.html", {
+            "message": "Invalid username and/or password."
+        })
+    return render(request, "app/sign_in.html")
 
 
 def logout_view(request):

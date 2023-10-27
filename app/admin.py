@@ -1,12 +1,13 @@
 from django.contrib import admin
+from import_export import resources
+from import_export.admin import ImportExportActionModelAdmin
+
 from .models import (
     User,
     Player,
     BonusBall,
     Draw
-    )
-from import_export import resources
-from import_export.admin import ImportExportActionModelAdmin
+)
 
 
 class BonusBallInlineAdmin(admin.TabularInline):
@@ -16,28 +17,24 @@ class BonusBallInlineAdmin(admin.TabularInline):
 
 class PlayerResource(resources.ModelResource):
     """Class for filtering Player information in PlayerAdminFilter"""
-    class Meta:
+    class Meta:  # pylint: disable=too-few-public-methods
         model = Player
 
 
+# pylint:disable=too-many-ancestors
 class PlayerAdminFilter(ImportExportActionModelAdmin, admin.ModelAdmin):
     inlines = [BonusBallInlineAdmin]
     list_display = ('name', 'active', 'email', 'datestamp_active_from', 'datestamp_active_until')
     resource_classes = [PlayerResource]
     ordering = ['name']
 
-    # def get_form(self, request, obj=None, **kwargs):
-    #     # just save obj reference for future processing in Inline
-    #     request._obj_ = obj
-    #     return super(PlayerAdminFilter, self).get_form(request, obj, **kwargs)
-
 
 class BonusBallResource(resources.ModelResource):
 
+    # pylint: disable=too-few-public-methods
     class Meta:
         model = BonusBall
         import_id_fields = ('ball_id',)
-        # fields = ('ball_id', 'player')
 
 
 class BonusBallAdminFilter(ImportExportActionModelAdmin, admin.ModelAdmin):
@@ -48,6 +45,7 @@ class BonusBallAdminFilter(ImportExportActionModelAdmin, admin.ModelAdmin):
 
 class DrawResource(resources.ModelResource):
 
+    # pylint: disable=too-few-public-methods
     class Meta:
         model = Draw
 

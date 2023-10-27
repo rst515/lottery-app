@@ -2,7 +2,6 @@ import logging
 
 
 class CustomFormatter(logging.Formatter):
-
     grey = "\x1b[37m"
     green = "\x1b[32;20m"
     yellow = "\x1b[33;20m"
@@ -19,6 +18,7 @@ class CustomFormatter(logging.Formatter):
         logging.CRITICAL: bold_red + format + reset
     }
 
+    # pylint: disable=function-redefined
     def format(self, record):
         log_fmt = self.FORMATS.get(record.levelno)
         formatter = logging.Formatter(log_fmt)
