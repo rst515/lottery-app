@@ -225,10 +225,12 @@ def login_view(request):
         if user is not None:
             login(request, user)
             return HttpResponseRedirect(reverse("index"))
-        return render(request, "app/sign_in.html", {
-            "message": "Invalid username and/or password."
-        })
-    return render(request, "app/sign_in.html")
+        else:
+            return render(request, "app/sign_in.html", {
+                "message": "Invalid username and/or password."
+            })
+    else:
+        return render(request, "app/sign_in.html")
 
 
 def logout_view(request):
