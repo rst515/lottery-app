@@ -33,7 +33,7 @@ w_secret = os.environ.get('GIT_HOOK_SECRET', '')
 class HelloView(APIView):
     permission_classes = (IsAuthenticated,)
 
-    def get(self):
+    def get(self, request):
         content = {'message': 'Hello, World!'}
         return Response(content)
 
@@ -199,7 +199,7 @@ def edit_number__player(request, pk):  # pylint:disable=invalid-name
             'number': bb,
             'players': players_list,
         })
-    if request.method == "POST":
+    elif request.method == "POST":
         bb_to_edit = BonusBall.objects.get(pk=pk)
 
         if request.POST['selected_player_id'] == '0':

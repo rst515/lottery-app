@@ -53,12 +53,7 @@ class PlayerUpdateForm(forms.ModelForm):
         label="Active from"
     )
 
-    # datestamp_active_until = forms.DateField(
-    #     required=False,
-    #     widget=forms.SelectDateWidget,
-    #     label="Active until"
-    # )
     # pylint: disable=[too-few-public-methods
     class Meta:
         model = Player
-        fields = ('name', 'datestamp_active_from')  # , 'datestamp_active_until', 'active')
+        fields = ('name', 'datestamp_active_from')

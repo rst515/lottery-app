@@ -242,16 +242,6 @@ JAZZMIN_SETTINGS = {
     # List of apps (and/or models) to base side menu ordering off of (does not need to contain all apps/models)
     "order_with_respect_to": ["app.Draw", "app.BonusBall", "app.Player", "auth"],
 
-    # Custom links to append to app groups, keyed on app name
-    # "custom_links": {
-    #     "books": [{
-    #         "name": "Make Messages",
-    #         "url": "make_messages",
-    #         "icon": "fas fa-comments",
-    #         "permissions": ["books.view_book"]
-    #     }]
-    # },
-
     # Custom icons for side menu apps/models. See https://fontawesome.com
     # for the full list of 5.13.0 free icon classes
     "icons": {
