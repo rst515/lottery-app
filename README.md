@@ -1,4 +1,4 @@
-# lottery-app
+# django-lottery-app
 ### Context
 A village charity fundraises using a lottery bonus-ball game for local residents. A solution was required to make game administration simpler for the people running it. 
 
@@ -6,9 +6,9 @@ A village charity fundraises using a lottery bonus-ball game for local residents
 Players each have one or more bonus balls allocated.  They win if their number matches the drawn number for that week.
 
 ### What the app does
-This app enables a lottery bonus ball game coordinator to manage players, their allocated numbers and weekly draws for the game through a simple password-protected UI.
+This Django web app enables a lottery bonus ball game coordinator to manage players, their allocated numbers and weekly draws for the game through a simple password-protected UI.
 
-A cron job on an AWS EC2 instance runs weekly to execute a script that gets the bonus ball from the weekly draw website and adds it to the database in the app.
+A cron job on an AWS EC2 instance runs weekly to execute a script that gets the bonus ball from the weekly National Lottery draw website and adds it to the database in the app.
 The app provides a UI and coordinator(s) are emailed the result and winner following a weekly draw.
 
 ### Cron job details (on EC2 instance)
